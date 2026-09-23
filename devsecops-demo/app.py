@@ -27,8 +27,7 @@ def get_user(username):
     """
     conn = sqlite3.connect("app.db")
     cursor = conn.cursor()
-    query = "SELECT * FROM users WHERE username = '" + username + "'"
-    cursor.execute(query)
+    cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
     return cursor.fetchone()
 
 
@@ -38,7 +37,7 @@ def run_diagnostic(hostname):
     User-controlled input passed to a shell command with shell=True.
     A scanner should flag this as OS command injection risk.
     """
-    result = subprocess.run(f"ping -c 1 {hostname}", shell=True, capture_output=True)
+    result = subprocess.run(["ping", "-c", "1", hostname], capture_output=True)
     return result.stdout
 
 
